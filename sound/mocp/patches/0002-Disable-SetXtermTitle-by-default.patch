@@ -1,0 +1,28 @@
+From 11846ed91e979b3a134c8b410bbec5dfe11eef03 Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Sun, 12 Feb 2012 00:09:34 +0300
+Subject: [PATCH 2/3] Disable SetXtermTitle by default
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ .interface_elements.c.swp |  Bin 110592 -> 0 bytes
+ options.c                 |    2 +-
+ 2 files changed, 1 insertions(+), 1 deletions(-)
+ delete mode 100644 .interface_elements.c.swp
+
+diff --git a/options.c b/options.c
+index 5d0572d..052f760 100644
+--- a/options.c
++++ b/options.c
+@@ -214,7 +214,7 @@ void options_init ()
+ 	option_add_int ("UseCursorSelection", 0);
+ 	option_add_str ("ID3v1TagsEncoding", "WINDOWS-1250");
+ 	option_add_int ("UseRCC", 1);
+-	option_add_int ("SetXtermTitle", 1);
++	option_add_int ("SetXtermTitle", 0);
+ 	option_add_int ("PlaylistFullPaths", 1);
+ 	option_add_int ("Allow24bitOutput", 0);
+ }
+-- 
+1.7.9
+

@@ -1,0 +1,66 @@
+From 33fac71a1262cc0867482b6600739746c043d7a5 Mon Sep 17 00:00:00 2001
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Sun, 12 Feb 2012 00:53:50 +0300
+Subject: [PATCH 3/3] Prefer id3v2 over id3v1
+
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+---
+ decoder_plugins/mp3/mp3.c |   26 ++++++++++++++++++++++++--
+ 1 files changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/decoder_plugins/mp3/mp3.c b/decoder_plugins/mp3/mp3.c
+index d78988f..35dfe22 100644
+--- a/decoder_plugins/mp3/mp3.c
++++ b/decoder_plugins/mp3/mp3.c
+@@ -59,6 +59,7 @@ struct mp3_data
+ {
+ 	struct io_stream *io_stream;
+ 	unsigned long bitrate;
++
+ 	unsigned int freq;
+ 	short channels;
+ 	signed long duration; /* Total time of the file in seconds.
+@@ -140,6 +141,25 @@ static char *id3v1_fix (const char *str)
+ 	return xstrdup (str);
+ }
+ 
++int __unique_frame (struct id3_tag *tag, struct id3_frame *frame)
++{
++    int i;
++
++    for (i = 0; i < tag->nframes; i++) {
++        if (tag->frames[i] == frame) {
++            break;
++        }
++    }
++
++    for (; i < tag->nframes; i++) {
++        if (strcmp(tag->frames[i]->id, frame->id) == 0) {
++            return 0;
++        }
++    }
++
++    return 1;
++}
++
+ static char *get_tag (struct id3_tag *tag, const char *what)
+ {
+ 	struct id3_frame *frame;
+@@ -151,10 +171,12 @@ static char *get_tag (struct id3_tag *tag, const char *what)
+ 	if (frame && (field = &frame->fields[1])) {
+ 		ucs4 = id3_field_getstrings (field, 0);
+ 		if (ucs4) {
+-			
+ 			/* Workaround for ID3 tags v1/v1.1 where the encoding
+ 			 * is latin1. */
+-			if (id3_tag_options(tag, 0, 0) & ID3_TAG_OPTION_ID3V1) {
++			union id3_field *encoding_field = &frame->fields[0];
++			if ((id3_tag_options(tag, 0, 0) & ID3_TAG_OPTION_ID3V1) &&
++						__unique_frame(tag, frame))
++			{
+ 				char *t;
+ 
+ 				comm = (char *)id3_ucs4_latin1duplicate (ucs4);
+-- 
+1.7.9
+
