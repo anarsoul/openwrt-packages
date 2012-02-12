@@ -28,7 +28,7 @@ define Package/libsdl-mixer
   CATEGORY:=Libraries
   TITLE:=Simple DirectMedia Layer Sound Mixer
   URL:=http://www.libsdl.org/projects/SDL_mixer/
-  DEPENDS:=+libsdl +libmikmod +libvorbisidec
+  DEPENDS:=+libsdl +libmikmod +libvorbisidec +libmad
 endef
 
 define Package/libsdl-mixer/description
@@ -43,15 +43,14 @@ define Build/Configure
 		--enable-music-mod \
 		--enable-music-mod-shared \
 		--enable-music-midi \
-		--disable-music-ogg \
+		--enable-music-ogg \
 		--enable-music-ogg-tremor \
 		--enable-music-ogg-shared \
 		--disable-music-flac \
 		--enable-music-flag-shared \
 		--disable-music-mp3 \
 		--enable-music-mp3-shared \
-		--disable-smpegtest \
-		--disable-music-mp3-mad-gpl \
+		--enable-music-mp3-mad-gpl \
 		--with-sdl-exec-prefix="$(STAGING_DIR)/usr" \
 	)
 endef
