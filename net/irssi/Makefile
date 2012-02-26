@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=irssi
 PKG_VERSION:=0.8.15
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://irssi.org/files/
@@ -63,13 +63,11 @@ endef
 CONFIGURE_ARGS += \
 	--with-perl=no \
 	--with-glib-prefix="$(STAGING_DIR)/usr" \
-	--with-textui \
-	--without-terminfo \
-	--without-bot \
-	--disable-proxy
+	--with-ncurses \
+	--with-proxy
 
 EXTRA_CFLAGS+=$(TARGET_CPPFLAGS) 
-EXTRA_LDFLAGS+=-lncurses
+EXTRA_LDFLAGS+=-lncursesw
 
 ifeq ($(BUILD_VARIANT),ssl)
 	CONFIGURE_ARGS += \
