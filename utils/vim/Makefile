@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=vim
 PKG_VERSION:=7.3
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 VIMVER:=73
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
@@ -87,7 +87,7 @@ CONFIGURE_ARGS += \
 	--disable-netbeans \
 	--disable-cscope \
 	--disable-gpm \
-	--with-tlib=ncurses
+	--with-tlib=ncursesw
 
 CONFIGURE_VARS += \
         vim_cv_getcwd_broken=no \
